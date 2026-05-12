@@ -1,0 +1,61 @@
+{
+  "output_folder": "output_slides",
+  "slides": [
+    {
+      "type": "hook",
+      "date_tag": "MAY 12, 2026",
+      "headline": "Buying an established investment property just got a lot more expensive."
+    },
+    {
+      "type": "content",
+      "headline": "Negative gearing on established properties is GONE.",
+      "accent_word": "GONE",
+      "body": "For new purchases only. Existing investors are fully grandfathered."
+    },
+    {
+      "type": "data_stat",
+      "label": "Out of pocket — established property",
+      "big_number": "$250/week",
+      "supporting_text": "No negative gearing. No tax offset. Just out of pocket."
+    },
+    {
+      "type": "content",
+      "headline": "New builds are EXEMPT.",
+      "accent_word": "EXEMPT",
+      "body": "Full negative gearing + depreciation still applies."
+    },
+    {
+      "type": "content",
+      "headline": "Dual dwellings = close to cashflow neutral.",
+      "body": "House + granny flat or duplex. Two rental incomes, one loan structure."
+    },
+    {
+      "type": "data_stat",
+      "label": "Year one depreciation refund",
+      "big_number": "$9K–$10K",
+      "supporting_text": "On a new build. Before you've paid a single extra dollar out of pocket."
+    },
+    {
+      "type": "comparison",
+      "label": "Out of pocket over 12 years",
+      "strikethrough_number": "$100K",
+      "corrected_number": "$68,500",
+      "supporting_text": "Established property vs new build. Gold Coast market data."
+    },
+    {
+      "type": "content",
+      "headline": "The loan structure matters more than the rate.",
+      "accent_word": "structure",
+      "body": "That's what I help with."
+    },
+    {
+      "type": "cta",
+      "cta_prompt": "Message me",
+      "keyword": "INVESTOR",
+      "supporting_text": "to get your lending position reviewed before your next purchase.",
+      "name": "Conrad Palmer",
+      "title": "Loan Market | Gold Coast",
+      "social_proof": "★★★★★  150+ Google Reviews"
+    }
+  ]
+}

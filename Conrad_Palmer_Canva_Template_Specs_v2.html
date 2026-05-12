@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Canva Carousel Template Spec — Conrad Palmer</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,300;0,400;0,600;0,700;1,400;1,600&display=swap');
+
+  :root {
+    --teal: #1e3239;
+    --teal-mid: #243d47;
+    --teal-light: #2c4a56;
+    --blue: #00abe6;
+    --blue-dim: rgba(0, 171, 230, 0.15);
+    --white: #ffffff;
+    --white-dim: rgba(255,255,255,0.6);
+    --white-faint: rgba(255,255,255,0.08);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--teal);
+    color: var(--white);
+    font-family: 'Source Sans 3', 'Source Sans Pro', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: var(--teal-mid);
+    border-bottom: 3px solid var(--blue);
+    padding: 40px 48px 32px;
+  }
+  header .logo-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  header .lm-badge {
+    background: var(--blue);
+    color: var(--white);
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    padding: 6px 14px;
+    border-radius: 4px;
+    text-transform: uppercase;
+  }
+  header .version {
+    font-size: 13px;
+    color: var(--white-dim);
+    letter-spacing: 0.05em;
+  }
+  header h1 {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--white);
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+  }
+  header h1 span { color: var(--blue); }
+  header p.sub {
+    margin-top: 8px;
+    font-size: 15px;
+    color: var(--white-dim);
+  }
+
+  /* ── LAYOUT ── */
+  .container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 48px 48px 80px;
+  }
+
+  /* ── SECTION TITLES ── */
+  .section {
+    margin-top: 56px;
+  }
+  .section-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--blue);
+    margin-bottom: 8px;
+  }
+  h2 {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--white-faint);
+  }
+  h3 {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--blue);
+    margin: 28px 0 12px;
+  }
+  p { margin-bottom: 12px; color: rgba(255,255,255,0.85); }
+  p:last-child { margin-bottom: 0; }
+
+  /* ── COLOUR SWATCHES ── */
+  .swatches {
+    display: flex;
+    gap: 16px;
+    margin: 20px 0;
+    flex-wrap: wrap;
+  }
+  .swatch {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--teal-mid);
+    border: 1px solid var(--white-faint);
+    border-radius: 8px;
+    padding: 12px 16px;
+    flex: 1;
+    min-width: 200px;
+  }
+  .swatch-dot {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    border: 2px solid rgba(255,255,255,0.15);
+  }
+  .swatch-info .name { font-weight: 700; font-size: 14px; }
+  .swatch-info .hex { font-size: 12px; color: var(--white-dim); font-family: monospace; }
+  .swatch-info .role { font-size: 11px; color: var(--white-dim); margin-top: 2px; }
+
+  /* ── FONT PILLS ── */
+  .fonts {
+    display: flex;
+    gap: 16px;
+    margin: 20px 0;
+    flex-wrap: wrap;
+  }
+  .font-card {
+    background: var(--blue-dim);
+    border: 1px solid var(--blue);
+    border-radius: 8px;
+    padding: 20px 24px;
+    flex: 1;
+    min-width: 220px;
+  }
+  .font-card .font-name {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--blue);
+    line-height: 1.1;
+    margin-bottom: 6px;
+  }
+  .font-card .font-weight { font-size: 13px; color: var(--white-dim); }
+  .font-card .font-use { font-size: 13px; color: rgba(255,255,255,0.75); margin-top: 8px; }
+
+  /* ── SAFE ZONE DIAGRAM ── */
+  .safezone {
+    background: var(--teal-mid);
+    border: 1px solid var(--white-faint);
+    border-radius: 10px;
+    padding: 24px;
+    margin: 20px 0;
+  }
+  .safezone-visual {
+    position: relative;
+    width: 160px;
+    height: 200px;
+    background: #1a2d36;
+    border: 2px dashed rgba(255,255,255,0.2);
+    border-radius: 4px;
+    margin: 0 auto 16px;
+  }
+  .safezone-inner {
+    position: absolute;
+    top: 18px; bottom: 22px; left: 12px; right: 12px;
+    border: 2px solid var(--blue);
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .safezone-inner span { font-size: 9px; color: var(--blue); text-align: center; line-height: 1.4; }
+  .safezone-labels {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .safezone-labels .item {
+    font-size: 13px;
+    color: rgba(255,255,255,0.8);
+  }
+  .safezone-labels .item strong { color: var(--blue); }
+
+  /* ── SLIDE CARDS ── */
+  .slide-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    margin: 24px 0;
+  }
+  .slide-card {
+    background: var(--teal-mid);
+    border: 1px solid var(--white-faint);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .slide-card-header {
+    background: var(--blue);
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .slide-num {
+    background: rgba(0,0,0,0.2);
+    color: var(--white);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 3px;
+    letter-spacing: 0.05em;
+  }
+  .slide-card-header h4 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--white);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .slide-preview {
+    /* Mini carousel preview */
+    background: #1a2d36;
+    aspect-ratio: 4/5;
+    max-height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .slide-card-body {
+    padding: 16px;
+  }
+  .slide-purpose {
+    font-size: 13px;
+    color: var(--white-dim);
+    margin-bottom: 12px;
+  }
+
+  /* ── TABLES ── */
+  .spec-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin-top: 8px;
+  }
+  .spec-table th {
+    text-align: left;
+    padding: 8px 10px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--blue);
+    border-bottom: 1px solid rgba(0,171,230,0.3);
+  }
+  .spec-table td {
+    padding: 9px 10px;
+    vertical-align: top;
+    color: rgba(255,255,255,0.82);
+    border-bottom: 1px solid var(--white-faint);
+    line-height: 1.4;
+  }
+  .spec-table tr:last-child td { border-bottom: none; }
+  .spec-table td:first-child { font-weight: 700; color: var(--white); white-space: nowrap; }
+  code {
+    font-family: monospace;
+    font-size: 12px;
+    background: rgba(0,171,230,0.12);
+    color: var(--blue);
+    padding: 1px 6px;
+    border-radius: 3px;
+  }
+
+  /* ── SLIDE PREVIEWS SVG ── */
+
+  /* HOOK */
+  .preview-hook {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 12px;
+    gap: 6px;
+    width: 100%;
+    height: 100%;
+  }
+  .preview-tag {
+    font-size: 7px;
+    font-weight: 700;
+    color: var(--blue);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .preview-headline {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1.0;
+  }
+  .preview-headline em { color: var(--blue); font-style: normal; }
+  .preview-logo-bar {
+    position: absolute;
+    bottom: 8px;
+    left: 10px;
+    background: var(--blue);
+    color: var(--white);
+    font-size: 6px;
+    font-weight: 700;
+    padding: 3px 7px;
+    border-radius: 2px;
+    letter-spacing: 0.05em;
+  }
+
+  /* CONTENT */
+  .preview-content { padding: 12px; display: flex; flex-direction: column; gap: 5px; justify-content: center; width: 100%; }
+  .preview-subhead { font-size: 8px; font-weight: 700; color: var(--blue); }
+  .preview-body { font-size: 10px; color: var(--white); line-height: 1.4; }
+
+  /* DATA */
+  .preview-data { padding: 12px; display: flex; flex-direction: column; gap: 4px; justify-content: center; width: 100%; }
+  .preview-bignum { font-size: 38px; font-weight: 700; color: var(--blue); line-height: 1; }
+  .preview-support { font-size: 9px; color: var(--white); }
+
+  /* COMPARISON */
+  .preview-compare { padding: 12px; display: flex; gap: 8px; align-items: flex-start; width: 100%; justify-content: center; }
+  .preview-col { flex: 1; display: flex; flex-direction: column; gap: 3px; }
+  .preview-col-head-bad { font-size: 7px; font-weight: 700; color: rgba(255,255,255,0.4); }
+  .preview-col-data-bad { font-size: 11px; color: rgba(255,255,255,0.5); text-decoration: line-through; }
+  .preview-divider { width: 2px; background: var(--blue); align-self: stretch; margin: 4px 0; border-radius: 1px; }
+  .preview-col-head-good { font-size: 7px; font-weight: 700; color: var(--blue); }
+  .preview-col-data-good { font-size: 14px; font-weight: 700; color: var(--white); }
+
+  /* CTA */
+  .preview-cta { padding: 10px; display: flex; flex-direction: column; align-items: center; gap: 4px; justify-content: center; width: 100%; }
+  .preview-avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--blue); display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; color: var(--white); }
+  .preview-cta-name { font-size: 9px; font-weight: 700; color: var(--white); }
+  .preview-cta-title { font-size: 8px; color: var(--blue); }
+  .preview-cta-stars { font-size: 7px; color: var(--white); opacity: 0.7; }
+  .preview-cta-prompt { font-size: 8px; font-weight: 700; color: var(--white); text-align: center; margin-top: 4px; line-height: 1.3; }
+
+  /* ── STEPS ── */
+  .steps { counter-reset: step; margin: 16px 0; }
+  .step {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  .step-num {
+    counter-increment: step;
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--blue);
+    color: var(--white);
+    font-size: 13px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2px;
+  }
+  .step-body { flex: 1; }
+  .step-body strong { color: var(--white); }
+  .step-body p { font-size: 14px; color: rgba(255,255,255,0.8); margin-bottom: 0; }
+
+  /* ── TIP BOXES ── */
+  .tip {
+    background: var(--blue-dim);
+    border-left: 3px solid var(--blue);
+    border-radius: 0 6px 6px 0;
+    padding: 12px 16px;
+    margin: 12px 0;
+    font-size: 13px;
+    color: rgba(255,255,255,0.85);
+  }
+  .tip strong { color: var(--blue); }
+
+  /* ── FOOTER ── */
+  footer {
+    text-align: center;
+    padding: 32px;
+    font-size: 12px;
+    color: var(--white-dim);
+    border-top: 1px solid var(--white-faint);
+    margin-top: 60px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo-row">
+    <span class="lm-badge">Loan Market</span>
+    <span class="version">Template Spec v2.0 — Brand Kit Corrected</span>
+  </div>
+  <h1>Instagram Carousel<br><span>Template Specification</span></h1>
+  <p class="sub">Conrad Palmer · Gold Coast · May 2026</p>
+</header>
+
+<div class="container">
+
+  <!-- BRAND SETUP -->
+  <div class="section">
+    <div class="section-label">Section 1</div>
+    <h2>Brand Kit &amp; Canvas Setup</h2>
+    <p>Before building slides, set up the base canvas and confirm brand assets are ready in Canva.</p>
+    <p><strong>Canvas:</strong> <code>1080 × 1350px</code> — Instagram Portrait (4:5 ratio). Maximum screen real estate on mobile.</p>
+
+    <h3>Colours</h3>
+    <div class="swatches">
+      <div class="swatch">
+        <div class="swatch-dot" style="background:#1e3239;"></div>
+        <div class="swatch-info">
+          <div class="name">Dark Teal</div>
+          <div class="hex">#1e3239</div>
+          <div class="role">All slide backgrounds</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-dot" style="background:#00abe6;"></div>
+        <div class="swatch-info">
+          <div class="name">LM Blue</div>
+          <div class="hex">#00abe6</div>
+          <div class="role">Accents, highlights, icons</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-dot" style="background:#ffffff; border:2px solid rgba(255,255,255,0.3);"></div>
+        <div class="swatch-info">
+          <div class="name">White</div>
+          <div class="hex">#ffffff</div>
+          <div class="role">Primary text</div>
+        </div>
+      </div>
+    </div>
+
+    <h3>Typography — Brand Kit Fonts</h3>
+    <div class="fonts">
+      <div class="font-card">
+        <div class="font-name">Geomanist Bold</div>
+        <div class="font-weight">Weight: Bold</div>
+        <div class="font-use">Headlines · Large display numbers · High-weight labels · Attention elements</div>
+      </div>
+      <div class="font-card">
+        <div class="font-name" style="font-weight:400;">Source Sans Pro</div>
+        <div class="font-weight">Weight: Regular</div>
+        <div class="font-use">Body copy · Supporting text · Sub-headlines · Captions · Social proof lines</div>
+      </div>
+    </div>
+    <div class="tip"><strong>Important:</strong> Do not use Montserrat. These are the two fonts set in the Canva Brand Kit. Always apply from the Brand Kit panel — never by typing the font name manually.</div>
+
+    <h3>Logo</h3>
+    <p>Square LM logo (blue square, white text) from the <strong>"Conrad — Brand Assets"</strong> Google Drive folder. Minimum <code>180px</code> wide, up to <code>220px</code>. Must appear on every slide. Lock after placement.</p>
+  </div>
+
+  <!-- DESIGN PRINCIPLES -->
+  <div class="section">
+    <div class="section-label">Section 2</div>
+    <h2>General Design Principles</h2>
+
+    <h3>Safe Zone</h3>
+    <p>Instagram overlays the profile handle, share button, and carousel dots on top of the image. Keep all content inside the safe zone.</p>
+    <div class="safezone">
+      <div class="safezone-visual">
+        <div class="safezone-inner"><span>SAFE<br>ZONE<br>920×1080</span></div>
+      </div>
+      <div class="safezone-labels">
+        <div class="item">Top margin: <strong>120px</strong></div>
+        <div class="item">Bottom margin: <strong>150px</strong></div>
+        <div class="item">Left margin: <strong>80px</strong></div>
+        <div class="item">Right margin: <strong>80px</strong></div>
+      </div>
+    </div>
+
+    <h3>Hierarchy &amp; Contrast</h3>
+    <p>Flow from headline → supporting text via stark size and weight differences. Use LM Blue sparingly — one key word per headline, or one stat. Overuse kills its impact.</p>
+
+    <h3>Alignment</h3>
+    <p>Left-align on Hook, Content, and Data slides. Centre-align on CTA and Comparison slides where symmetry is needed.</p>
+  </div>
+
+  <!-- SLIDE VARIANTS -->
+  <div class="section">
+    <div class="section-label">Section 3</div>
+    <h2>Slide Type Specifications</h2>
+
+    <div class="slide-grid">
+
+      <!-- HOOK -->
+      <div class="slide-card">
+        <div class="slide-card-header">
+          <span class="slide-num">01</span>
+          <h4>Hook</h4>
+        </div>
+        <div class="slide-preview">
+          <div class="preview-hook">
+            <div class="preview-tag">⚠ RBA ALERT</div>
+            <div class="preview-headline">Rates<br><em>just</em><br>moved</div>
+          </div>
+          <div class="preview-logo-bar">LM</div>
+        </div>
+        <div class="slide-card-body">
+          <p class="slide-purpose">Stop the scroll. One bold statement.</p>
+          <table class="spec-table">
+            <thead><tr><th>Element</th><th>Spec</th></tr></thead>
+            <tbody>
+              <tr><td>Attention tag</td><td><code>80, 150px</code> · Geomanist Bold 24px · LM Blue · All caps</td></tr>
+              <tr><td>Headline</td><td><code>80, 220px</code> · Geomanist Bold 85–100px · White · 1 word in LM Blue · Line spacing 1.1</td></tr>
+              <tr><td>Logo</td><td><code>80 or 800, 1100px</code> · 200px wide · Lock</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- CONTENT -->
+      <div class="slide-card">
+        <div class="slide-card-header">
+          <span class="slide-num">02</span>
+          <h4>Content</h4>
+        </div>
+        <div class="slide-preview">
+          <div class="preview-content">
+            <div class="preview-subhead">What this means for you</div>
+            <div class="preview-body">Your repayments<br>could drop by<br>$300/month<br>without refinancing.</div>
+          </div>
+          <div class="preview-logo-bar" style="left:auto;right:8px;">LM</div>
+        </div>
+        <div class="slide-card-body">
+          <p class="slide-purpose">One idea per slide. Clear and concise.</p>
+          <table class="spec-table">
+            <thead><tr><th>Element</th><th>Spec</th></tr></thead>
+            <tbody>
+              <tr><td>Sub-headline</td><td><code>80, 150px</code> · Geomanist Bold 36px · LM Blue (optional)</td></tr>
+              <tr><td>Body text</td><td><code>80, 250px</code> max 920px · Source Sans Pro 48–56px · White · Line spacing 1.4</td></tr>
+              <tr><td>Logo</td><td><code>820, 1120px</code> · 180px wide · Bottom right</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- DATA -->
+      <div class="slide-card">
+        <div class="slide-card-header">
+          <span class="slide-num">03</span>
+          <h4>Data / Stat</h4>
+        </div>
+        <div class="slide-preview">
+          <div class="preview-data">
+            <div class="preview-bignum">87%</div>
+            <div class="preview-support">of Australians don't know their current interest rate.</div>
+          </div>
+          <div class="preview-logo-bar" style="left:auto;right:8px;">LM</div>
+        </div>
+        <div class="slide-card-body">
+          <p class="slide-purpose">One compelling number. Let it breathe.</p>
+          <table class="spec-table">
+            <thead><tr><th>Element</th><th>Spec</th></tr></thead>
+            <tbody>
+              <tr><td>Big number</td><td><code>80, 300px</code> · Geomanist Bold 180–220px · LM Blue</td></tr>
+              <tr><td>Support text</td><td><code>80, 550px</code> max 920px · Source Sans Pro 50px · White</td></tr>
+              <tr><td>Logo</td><td><code>820, 1120px</code> · 180px wide · Bottom right</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- COMPARISON -->
+      <div class="slide-card">
+        <div class="slide-card-header">
+          <span class="slide-num">04</span>
+          <h4>Comparison</h4>
+        </div>
+        <div class="slide-preview">
+          <div class="preview-compare">
+            <div class="preview-col">
+              <div class="preview-col-head-bad">Direct to bank</div>
+              <div class="preview-col-data-bad">6.84%</div>
+            </div>
+            <div class="preview-divider"></div>
+            <div class="preview-col">
+              <div class="preview-col-head-good">Via broker</div>
+              <div class="preview-col-data-good">5.99%</div>
+            </div>
+          </div>
+          <div class="preview-logo-bar" style="left:50%;transform:translateX(-50%);">LM</div>
+        </div>
+        <div class="slide-card-body">
+          <p class="slide-purpose">Two options. The better one wins visually.</p>
+          <table class="spec-table">
+            <thead><tr><th>Element</th><th>Spec</th></tr></thead>
+            <tbody>
+              <tr><td>Col 1 header</td><td><code>80, 200px</code> · Geomanist Bold 45px · White 50% opacity</td></tr>
+              <tr><td>Col 1 data</td><td><code>80, 300px</code> · Source Sans Pro 60px · White · Strikethrough</td></tr>
+              <tr><td>Divider</td><td><code>540px, 200–900px</code> · 4px · LM Blue (optional)</td></tr>
+              <tr><td>Col 2 header</td><td><code>580, 200px</code> · Geomanist Bold 45px · LM Blue</td></tr>
+              <tr><td>Col 2 data</td><td><code>580, 300px</code> · Geomanist Bold 80px · White</td></tr>
+              <tr><td>Logo</td><td><code>440, 1120px</code> · 200px wide · Bottom centre</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- CTA -->
+      <div class="slide-card">
+        <div class="slide-card-header">
+          <span class="slide-num">05</span>
+          <h4>Call to Action</h4>
+        </div>
+        <div class="slide-preview">
+          <div class="preview-cta">
+            <div class="preview-avatar">C</div>
+            <div class="preview-cta-name">Conrad Palmer</div>
+            <div class="preview-cta-title">Mortgage Broker</div>
+            <div class="preview-cta-stars">★★★★★ 150+ Google Reviews</div>
+            <div class="preview-cta-prompt">DM me 'RATES'<br>to review your loan.</div>
+          </div>
+          <div class="preview-logo-bar" style="left:50%;transform:translateX(-50%);">LM</div>
+        </div>
+        <div class="slide-card-body">
+          <p class="slide-purpose">Drive a specific action. One prompt only.</p>
+          <table class="spec-table">
+            <thead><tr><th>Element</th><th>Spec</th></tr></thead>
+            <tbody>
+              <tr><td>Profile image</td><td><code>390, 150px</code> · 300×300px · Circle frame · Headshot</td></tr>
+              <tr><td>Name</td><td>Centre, Y <code>500px</code> · Geomanist Bold 50px · White</td></tr>
+              <tr><td>Title</td><td>Centre, Y <code>560px</code> · Source Sans Pro 35px · LM Blue</td></tr>
+              <tr><td>Social proof</td><td>Centre, Y <code>620px</code> · Source Sans Pro 30px · White · ★★★★★ 150+ Google Reviews</td></tr>
+              <tr><td>The prompt</td><td>Centre, Y <code>750px</code> · Geomanist Bold 60px · White</td></tr>
+              <tr><td>Logo</td><td><code>440, 1050px</code> · 200px wide · Bottom centre</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- BUILD STEPS -->
+  <div class="section">
+    <div class="section-label">Section 4</div>
+    <h2>Building the Template in Canva</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <strong>Create the design</strong>
+          <p>Open Canva → <strong>Create a design → Custom size</strong> → <code>1080 × 1350px</code></p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <strong>Set the background</strong>
+          <p>Click the canvas → colour tile in top menu → add <code>#1e3239</code></p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <strong>Set up the safe zone guides</strong>
+          <p><strong>File → View settings → Show rulers and guides</strong> (or Shift + R). Drag horizontal guides to 120px and 1200px. Drag vertical guides to 80px and 1000px.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <strong>Apply brand fonts from the Brand Kit</strong>
+          <p>Geomanist Bold for headlines. Source Sans Pro for body. Always apply from the Brand Kit panel — do not type font names manually.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-body">
+          <strong>Add 5 pages, one variant per slide</strong>
+          <p>Use the <strong>Add page</strong> button. Build each variant using the specs in Section 3. Press <code>T</code> to add text boxes. Drag them to the full safe zone width (920px).</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">6</div>
+        <div class="step-body">
+          <strong>Lock the logo on every slide</strong>
+          <p>Select logo → three dots (<code>…</code>) → <strong>Lock</strong>. Repeat on every slide.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BULK CREATE -->
+  <div class="section">
+    <div class="section-label">Section 5</div>
+    <h2>Bulk Create (CSV)</h2>
+    <p>Once the master template is built, Bulk Create lets you generate multiple Content or Data slides from a spreadsheet.</p>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <strong>Prepare your CSV</strong>
+          <p>In Excel or Google Sheets, create columns for each variable — e.g. <code>Sub-Headline</code> and <code>Body Text</code>. One row = one slide. Export as CSV.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <strong>Connect data in Canva</strong>
+          <p>Open master template → duplicate the target slide → <strong>Apps → Bulk Create → Upload CSV</strong>.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <strong>Link fields and generate</strong>
+          <p>Right-click each text box → <strong>Connect data</strong> → pick the CSV column. Text boxes update to show <code>{Sub-Headline}</code>. Click <strong>Continue → select rows → Generate pages</strong>.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- USEFUL FEATURES -->
+  <div class="section">
+    <div class="section-label">Section 6</div>
+    <h2>Useful Canva Features</h2>
+
+    <div class="tip"><strong>Circle frame for CTA headshot:</strong> Elements → Frames → circle. Drag headshot onto frame to snap it into a perfect circle.</div>
+    <div class="tip"><strong>Tidy Up for even spacing:</strong> Select multiple text boxes → Position → Tidy Up. Instantly equalises spacing and alignment.</div>
+    <div class="tip"><strong>Copy Style (paint roller):</strong> Select a formatted text box → click the paint roller → click another text box to copy font, size, and colour in one click. Essential for consistency across slides.</div>
+  </div>
+
+</div>
+
+<footer>
+  Conrad Palmer · Loan Market Gold Coast · ACL 390222<br>
+  Template Spec v2.0 · Fonts: Geomanist Bold + Source Sans Pro · May 2026
+</footer>
+
+</body>
+</html>

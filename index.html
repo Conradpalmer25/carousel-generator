@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Carousel Generator | Loan Market</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <style>
+    :root {
+      --bg: #1a1a1a;
+      --surface: #222222;
+      --surface-2: #2a2a2a;
+      --blue: #4da3ff;
+      --white: #f5f7fa;
+      --muted: #8a8d90;
+      --border: #333333;
+      --radius: 10px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--white);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-size: 14px;
+      min-height: 100vh;
+    }
+
+    /* ── Header ── */
+    header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 18px 32px;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      background: var(--bg);
+      z-index: 10;
+    }
+
+    .lm-mark {
+      width: 32px; height: 32px;
+      background: var(--blue);
+      border-radius: 6px;
+      flex-shrink: 0;
+    }
+
+    header h1 { font-size: 16px; font-weight: 600; }
+    header p  { font-size: 13px; color: var(--muted); margin-top: 1px; }
+
+    /* ── Main ── */
+    main { max-width: 1340px; margin: 0 auto; padding: 28px 32px 60px; }
+
+    /* ── Topic panel ── */
+    #topic-panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 28px;
+    }
+
+    #topic-panel h2 { font-size: 13px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 14px; }
+
+    .input-row { display: flex; gap: 10px; align-items: flex-start; }
+
+    textarea#topic-input {
+      flex: 1;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--white);
+      font: 14px/1.5 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      padding: 12px 14px;
+      resize: vertical;
+      min-height: 72px;
+    }
+    textarea#topic-input::placeholder { color: var(--muted); }
+    textarea#topic-input:focus { outline: none; border-color: var(--blue); }
+
+    /* ── Buttons ── */
+    .btn {
+      background: var(--blue);
+      color: #111;
+      border: none;
+      border-radius: 8px;
+      padding: 12px 22px;
+      font: 600 14px/1 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: opacity .15s;
+    }
+    .btn:hover   { opacity: .85; }
+    .btn:disabled { opacity: .35; cursor: not-allowed; }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--blue);
+      border: 1px solid var(--blue);
+    }
+    .btn-ghost:hover { background: rgba(77,163,255,.08); }
+
+    .btn-sm { padding: 8px 14px; font-size: 13px; }
+
+    /* ── Status ── */
+    #status { font-size: 13px; color: var(--muted); margin-top: 10px; min-height: 18px; }
+    #status.err { color: #ff6b6b; }
+
+    /* ── Slide cards ── */
+    #slides-container { display: flex; flex-direction: column; gap: 20px; }
+
+    .slide-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .slide-card-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 13px 20px;
+      background: var(--surface-2);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .slide-meta { display: flex; align-items: center; gap: 10px; }
+    .slide-num  { font-size: 13px; color: var(--muted); }
+
+    .type-badge {
+      background: var(--blue); color: #111;
+      font-size: 10px; font-weight: 700;
+      padding: 3px 9px; border-radius: 20px;
+      text-transform: uppercase; letter-spacing: 0.5px;
+    }
+
+    .slide-body {
+      display: grid;
+      grid-template-columns: 360px 1fr;
+    }
+
+    @media (max-width: 860px) { .slide-body { grid-template-columns: 1fr; } }
+
+    /* ── Form ── */
+    .slide-form {
+      padding: 20px;
+      border-right: 1px solid var(--border);
+      display: flex; flex-direction: column; gap: 14px;
+    }
+
+    .field label {
+      display: block;
+      font-size: 11px; font-weight: 600; color: var(--muted);
+      text-transform: uppercase; letter-spacing: 0.5px;
+      margin-bottom: 5px;
+    }
+
+    .field input,
+    .field textarea {
+      width: 100%;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--white);
+      font: 14px/1.4 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      padding: 9px 11px;
+    }
+    .field textarea  { min-height: 64px; resize: vertical; }
+    .field input:focus,
+    .field textarea:focus { outline: none; border-color: var(--blue); }
+    .field input::placeholder,
+    .field textarea::placeholder { color: var(--muted); }
+
+    /* ── Preview ── */
+    .preview-panel {
+      padding: 20px;
+      display: flex; flex-direction: column; align-items: center; gap: 12px;
+    }
+
+    canvas.slide-canvas {
+      display: block;
+      border-radius: 4px;
+      box-shadow: 0 4px 20px rgba(0,0,0,.5);
+      /* 1080×1350 rendered at ~39% — fits in panel */
+      width: 421px;
+      height: 527px;
+    }
+
+    /* ── Bottom actions ── */
+    #bottom-actions {
+      margin-top: 28px;
+      display: flex; gap: 10px; justify-content: center;
+    }
+
+    /* ── Spinner ── */
+    .spin {
+      display: inline-block; width: 14px; height: 14px;
+      border: 2px solid rgba(77,163,255,.25);
+      border-top-color: var(--blue);
+      border-radius: 50%;
+      animation: rotate .65s linear infinite;
+      vertical-align: middle; margin-right: 7px;
+    }
+    @keyframes rotate { to { transform: rotate(360deg); } }
+
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="lm-mark"></div>
+  <div>
+    <h1>Carousel Generator</h1>
+    <p>Loan Market Gold Coast</p>
+  </div>
+</header>
+
+<main>
+
+  <div id="topic-panel">
+    <h2>New Carousel</h2>
+    <div class="input-row">
+      <textarea id="topic-input"
+        placeholder="Describe your topic — e.g. 'The RBA just cut rates. What it means for Gold Coast investors and whether now is the time to fix.'"
+        rows="3"></textarea>
+      <button class="btn" id="draft-btn" onclick="draftContent()">✦ Draft with AI</button>
+    </div>
+    <div id="status"></div>
+  </div>
+
+  <div id="slides-container"></div>
+
+  <div id="bottom-actions" class="hidden">
+    <button class="btn" onclick="downloadAll()">↓ Download All as ZIP</button>
+    <button class="btn btn-ghost" onclick="resetAll()">Start Over</button>
+  </div>
+
+</main>
+
+<script>
+// ─────────────────────────────────────────────────────────────
+// BRAND CONSTANTS  (match carousel_generator.py exactly)
+// ─────────────────────────────────────────────────────────────
+const SLIDE_W = 1080, SLIDE_H = 1350;
+const ML = 80, MR = 80, SAFE_W = SLIDE_W - ML - MR; // 920
+const BG      = '#1a1a1a';
+const BLUE    = '#4da3ff';
+const WHITE   = '#f5f7fa';
+const MUTED   = '#c4c6c8';
+
+const RULE_X = 58, RULE_W_PX = 5, RULE_Y1 = 195, RULE_Y2 = 1220;
+const LOGO_SIZE = 185, LOGO_RIGHT = 40, LOGO_TOP = 35;
+const COUNTER_Y = SLIDE_H - 70;
+
+// ─────────────────────────────────────────────────────────────
+// STATE
+// ─────────────────────────────────────────────────────────────
+let slidesData  = [];
+let logoImg     = null;
+let assetsReady = false;
+
+// ─────────────────────────────────────────────────────────────
+// ASSET LOADING
+// ─────────────────────────────────────────────────────────────
+async function loadAssets() {
+  if (assetsReady) return;
+
+  const fontDefs = [
+    { name: 'InterReg',    url: '/fonts/body_regular.ttf' },
+    { name: 'InterMed',    url: '/fonts/body_medium.ttf'  },
+    { name: 'InterBold',   url: '/fonts/body_bold.ttf'    },
+    { name: 'Geomanist',   url: '/fonts/geomanist_bold.otf' },
+  ];
+
+  await Promise.all(fontDefs.map(async ({ name, url }) => {
+    try {
+      const f = new FontFace(name, `url(${url})`);
+      await f.load();
+      document.fonts.add(f);
+    } catch (e) {
+      console.warn('Font load failed:', name, e);
+    }
+  }));
+
+  logoImg = await new Promise(resolve => {
+    const img = new Image();
+    img.onload  = () => resolve(img);
+    img.onerror = () => resolve(null);
+    img.src = '/images/lm_logo.png';
+  });
+
+  assetsReady = true;
+}
+
+// ─────────────────────────────────────────────────────────────
+// FONT HELPERS
+// ─────────────────────────────────────────────────────────────
+const FONT_MAP = {
+  body_regular:  'InterReg',
+  body_medium:   'InterMed',
+  body_bold:     'InterBold',
+  headline_bold: 'Geomanist',
+};
+
+function f(name, size) {
+  return `${size}px ${FONT_MAP[name] || name}, sans-serif`;
+}
+
+function lineH(ctx, fontStr, spacing = 1.25) {
+  ctx.font = fontStr;
+  const m = ctx.measureText('Mg');
+  return Math.round((m.actualBoundingBoxAscent + m.actualBoundingBoxDescent) * spacing);
+}
+
+// ─────────────────────────────────────────────────────────────
+// DRAW HELPERS
+// ─────────────────────────────────────────────────────────────
+function wrapText(ctx, text, fontStr, maxW) {
+  if (!text) return [];
+  ctx.font = fontStr;
+  const words = text.split(' ');
+  const lines = [];
+  let cur = [];
+  for (const w of words) {
+    const test = [...cur, w].join(' ');
+    if (ctx.measureText(test).width <= maxW) { cur.push(w); }
+    else { if (cur.length) lines.push(cur.join(' ')); cur = [w]; }
+  }
+  if (cur.length) lines.push(cur.join(' '));
+  return lines;
+}
+
+function drawLines(ctx, lines, fontStr, x, y, color, spacing = 1.25) {
+  ctx.font = fontStr;
+  ctx.fillStyle = color;
+  ctx.textBaseline = 'top';
+  const lh = lineH(ctx, fontStr, spacing);
+  for (const ln of lines) { ctx.fillText(ln, x, y); y += lh; }
+  return y;
+}
+
+function drawBase(ctx, num, total) {
+  ctx.textBaseline = 'top';
+  // Background
+  ctx.fillStyle = BG;
+  ctx.fillRect(0, 0, SLIDE_W, SLIDE_H);
+  // Left rule
+  ctx.fillStyle = BLUE;
+  ctx.fillRect(RULE_X, RULE_Y1, RULE_W_PX, RULE_Y2 - RULE_Y1);
+  // Counter
+  const fnt = f('body_regular', 28);
+  ctx.font = fnt; ctx.fillStyle = MUTED; ctx.textBaseline = 'top';
+  ctx.fillText(`${num} / ${total}`, ML, COUNTER_Y);
+}
+
+function drawLogo(ctx) {
+  const lx = SLIDE_W - LOGO_SIZE - LOGO_RIGHT;
+  const ly = LOGO_TOP;
+  if (logoImg) {
+    ctx.drawImage(logoImg, lx, ly, LOGO_SIZE, LOGO_SIZE);
+  } else {
+    ctx.fillStyle = BLUE;
+    ctx.fillRect(lx, ly, LOGO_SIZE, LOGO_SIZE);
+    ctx.fillStyle = WHITE; ctx.textBaseline = 'top';
+    ctx.font = f('body_bold', 32);
+    ctx.fillText('Loan',   lx + 18, ly + 42);
+    ctx.fillText('Market', lx + 12, ly + 84);
+  }
+}
+
+function roundRect(ctx, x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.arcTo(x + w, y,     x + w, y + h, r);
+  ctx.arcTo(x + w, y + h, x,     y + h, r);
+  ctx.arcTo(x,     y + h, x,     y,     r);
+  ctx.arcTo(x,     y,     x + w, y,     r);
+  ctx.closePath();
+}
+
+// ─────────────────────────────────────────────────────────────
+// SLIDE BUILDERS
+// ─────────────────────────────────────────────────────────────
+function buildHook(ctx, s, num, total) {
+  drawBase(ctx, num, total); drawLogo(ctx);
+
+  // Date badge
+  if (s.date_tag) {
+    const fBadge = f('headline_bold', 34);
+    ctx.font = fBadge;
+    const tw = ctx.measureText(s.date_tag).width;
+    const bx = ML, by = 330, bw = tw + 44, bh = 52;
+    ctx.fillStyle = BLUE;
+    roundRect(ctx, bx, by, bw, bh, 26); ctx.fill();
+    ctx.fillStyle = '#141414'; ctx.textBaseline = 'top';
+    ctx.fillText(s.date_tag, bx + 22, by + 10);
+  }
+
+  const fHead = f('headline_bold', 82);
+  const lines = wrapText(ctx, s.headline || '', fHead, SAFE_W);
+  drawLines(ctx, lines, fHead, ML, 430, WHITE, 1.15);
+}
+
+function buildContent(ctx, s, num, total) {
+  drawBase(ctx, num, total); drawLogo(ctx);
+
+  const fHead   = f('headline_bold', 88);
+  const fAccent = f('headline_bold', 160);
+  const fBody   = f('body_regular',  52);
+  const accent  = (s.accent_word || '').trim();
+  let headline  = s.headline || '';
+  let y = 360;
+
+  if (accent) {
+    const clean = headline.replace(new RegExp(accent + '\\.?', 'gi'), '').trim().replace(/[.,]+$/, '');
+    const headLines = wrapText(ctx, clean, fHead, SAFE_W);
+    y = drawLines(ctx, headLines, fHead, ML, y, WHITE, 1.15);
+    y += 10;
+    ctx.font = fAccent; ctx.fillStyle = BLUE; ctx.textBaseline = 'top';
+    const label = accent.toUpperCase() + '.';
+    ctx.fillText(label, ML, y);
+    const m = ctx.measureText(label);
+    y += (m.actualBoundingBoxAscent + m.actualBoundingBoxDescent) + 45;
+  } else {
+    const headLines = wrapText(ctx, headline, fHead, SAFE_W);
+    y = drawLines(ctx, headLines, fHead, ML, y, WHITE, 1.15);
+    y += 45;
+  }
+
+  const bodyLines = wrapText(ctx, s.body || '', fBody, SAFE_W);
+  drawLines(ctx, bodyLines, fBody, ML, y, MUTED, 1.5);
+}
+
+function buildDataStat(ctx, s, num, total) {
+  drawBase(ctx, num, total); drawLogo(ctx);
+
+  const fLabel = f('body_regular', 44);
+  const fNum   = f('headline_bold', 180);
+  const fSup   = f('body_medium',   52);
+  let y = 430;
+
+  if (s.label) {
+    ctx.font = fLabel; ctx.fillStyle = MUTED; ctx.textBaseline = 'top';
+    ctx.fillText(s.label, ML, y); y += 65;
+  }
+
+  ctx.font = fNum; ctx.fillStyle = BLUE; ctx.textBaseline = 'top';
+  const bigNum = s.big_number || '';
+  ctx.fillText(bigNum, ML, y);
+  const m = ctx.measureText(bigNum);
+  y += (m.actualBoundingBoxAscent + m.actualBoundingBoxDescent) + 45;
+
+  const supLines = wrapText(ctx, s.supporting_text || '', fSup, SAFE_W);
+  drawLines(ctx, supLines, fSup, ML, y, WHITE, 1.5);
+}
+
+function buildComparison(ctx, s, num, total) {
+  drawBase(ctx, num, total); drawLogo(ctx);
+
+  const fLabel  = f('body_regular',  44);
+  const fStrike = f('headline_bold', 120);
+  const fCorr   = f('headline_bold', 160);
+  const fSup    = f('body_regular',  46);
+  let y = 420;
+
+  if (s.label) {
+    ctx.font = fLabel; ctx.fillStyle = MUTED; ctx.textBaseline = 'top';
+    ctx.fillText(s.label, ML, y); y += 65;
+  }
+
+  // Strikethrough number
+  const sNum = s.strikethrough_number || '';
+  ctx.font = fStrike; ctx.fillStyle = MUTED; ctx.textBaseline = 'top';
+  ctx.fillText(sNum, ML, y);
+  const sw  = ctx.measureText(sNum).width;
+  const ms  = ctx.measureText(sNum);
+  const sH  = ms.actualBoundingBoxAscent + ms.actualBoundingBoxDescent;
+  const midY = y + ms.actualBoundingBoxAscent * 0.5;
+  ctx.strokeStyle = MUTED; ctx.lineWidth = 7;
+  ctx.beginPath(); ctx.moveTo(ML, midY); ctx.lineTo(ML + sw, midY); ctx.stroke();
+  y += sH + 15;
+
+  // Corrected number
+  const cNum = s.corrected_number || '';
+  ctx.font = fCorr; ctx.fillStyle = BLUE; ctx.textBaseline = 'top';
+  ctx.fillText(cNum, ML, y);
+  const mc = ctx.measureText(cNum);
+  y += (mc.actualBoundingBoxAscent + mc.actualBoundingBoxDescent) + 50;
+
+  const supLines = wrapText(ctx, s.supporting_text || '', fSup, SAFE_W);
+  drawLines(ctx, supLines, fSup, ML, y, MUTED, 1.5);
+}
+
+function buildCTA(ctx, s, num, total) {
+  drawBase(ctx, num, total); drawLogo(ctx);
+
+  const fPrompt  = f('headline_bold', 46);
+  const fKw      = f('headline_bold', 76);
+  const fSup     = f('body_regular',  30);
+  const fName    = f('body_bold',     34);
+  const fTitle   = f('body_medium',   26);
+  const fStars   = f('body_medium',   24);
+  let y = 300;
+
+  ctx.font = fPrompt; ctx.fillStyle = WHITE; ctx.textBaseline = 'top';
+  ctx.fillText(s.cta_prompt || 'Message me', ML, y);
+  y += lineH(ctx, fPrompt) + 5;
+
+  const kw = `"${s.keyword || ''}"`;
+  ctx.font = fKw; ctx.fillStyle = BLUE; ctx.textBaseline = 'top';
+  ctx.fillText(kw, ML, y);
+  const mk = ctx.measureText(kw);
+  y += (mk.actualBoundingBoxAscent + mk.actualBoundingBoxDescent) + 30;
+
+  const supLines = wrapText(ctx, s.supporting_text || '', fSup, SAFE_W);
+  y = drawLines(ctx, supLines, fSup, ML, y, MUTED, 1.5);
+  y += 55;
+
+  // Divider
+  ctx.strokeStyle = '#3c4650'; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(ML, y); ctx.lineTo(SLIDE_W - MR, y); ctx.stroke();
+  y += 35;
+
+  ctx.font = fName; ctx.fillStyle = WHITE; ctx.textBaseline = 'top';
+  ctx.fillText(s.name || 'Conrad Palmer', ML, y); y += lineH(ctx, fName);
+
+  ctx.font = fTitle; ctx.fillStyle = MUTED; ctx.textBaseline = 'top';
+  ctx.fillText(s.title || 'Loan Market | Gold Coast', ML, y); y += lineH(ctx, fTitle);
+
+  ctx.font = fStars; ctx.fillStyle = BLUE; ctx.textBaseline = 'top';
+  ctx.fillText(s.social_proof || '★★★★★  150+ Google Reviews', ML, y);
+}
+
+const BUILDERS = {
+  hook:       buildHook,
+  content:    buildContent,
+  data_stat:  buildDataStat,
+  comparison: buildComparison,
+  cta:        buildCTA,
+};
+
+function renderSlide(canvas, slide, num, total) {
+  const ctx = canvas.getContext('2d');
+  (BUILDERS[slide.type] || buildContent)(ctx, slide, num, total);
+}
+
+// ─────────────────────────────────────────────────────────────
+// FIELD SCHEMAS
+// ─────────────────────────────────────────────────────────────
+const FIELDS = {
+  hook: [
+    { key: 'date_tag', label: 'Date Tag', tag: 'input',    ph: 'e.g. MAY 12, 2026' },
+    { key: 'headline', label: 'Headline', tag: 'textarea', ph: 'Main headline text' },
+  ],
+  content: [
+    { key: 'headline',    label: 'Headline',    tag: 'textarea', ph: 'Main headline' },
+    { key: 'accent_word', label: 'Accent Word', tag: 'input',    ph: 'One word to show in blue (optional)' },
+    { key: 'body',        label: 'Body Text',   tag: 'textarea', ph: 'Supporting paragraph' },
+  ],
+  data_stat: [
+    { key: 'label',           label: 'Label',           tag: 'input',    ph: 'e.g. Out of pocket per week' },
+    { key: 'big_number',      label: 'Big Number',      tag: 'input',    ph: 'e.g. $250/week' },
+    { key: 'supporting_text', label: 'Supporting Text', tag: 'textarea', ph: 'Explanation below the number' },
+  ],
+  comparison: [
+    { key: 'label',                label: 'Label',              tag: 'input',    ph: 'e.g. Out of pocket over 12 years' },
+    { key: 'strikethrough_number', label: 'Crossed Out Number', tag: 'input',    ph: 'e.g. $100K' },
+    { key: 'corrected_number',     label: 'Better Number',      tag: 'input',    ph: 'e.g. $68,500' },
+    { key: 'supporting_text',      label: 'Supporting Text',    tag: 'textarea', ph: 'Context for the comparison' },
+  ],
+  cta: [
+    { key: 'cta_prompt',     label: 'CTA Prompt',    tag: 'input',    ph: 'e.g. Message me' },
+    { key: 'keyword',        label: 'Keyword',       tag: 'input',    ph: 'e.g. INVESTOR' },
+    { key: 'supporting_text',label: 'Supporting',    tag: 'textarea', ph: 'What they get when they message' },
+    { key: 'name',           label: 'Name',          tag: 'input',    ph: 'Conrad Palmer' },
+    { key: 'title',          label: 'Title',         tag: 'input',    ph: 'Loan Market | Gold Coast' },
+    { key: 'social_proof',   label: 'Social Proof',  tag: 'input',    ph: '★★★★★  150+ Google Reviews' },
+  ],
+};
+
+// ─────────────────────────────────────────────────────────────
+// UI BUILDING
+// ─────────────────────────────────────────────────────────────
+function buildSlideCards(slides) {
+  const container = document.getElementById('slides-container');
+  container.innerHTML = '';
+
+  slides.forEach((slide, i) => {
+    const card = document.createElement('div');
+    card.className = 'slide-card';
+
+    card.innerHTML = `
+      <div class="slide-card-header">
+        <div class="slide-meta">
+          <span class="slide-num">Slide ${i + 1}</span>
+          <span class="type-badge">${(slide.type || 'content').replace('_', ' ')}</span>
+        </div>
+        <button class="btn btn-ghost btn-sm" onclick="downloadSlide(${i})">↓ Download</button>
+      </div>
+      <div class="slide-body">
+        <div class="slide-form" id="form-${i}"></div>
+        <div class="preview-panel">
+          <canvas class="slide-canvas" id="canvas-${i}" width="1080" height="1350"></canvas>
+        </div>
+      </div>
+    `;
+
+    container.appendChild(card);
+
+    // Build form fields
+    const form = document.getElementById(`form-${i}`);
+    const fields = FIELDS[slide.type] || FIELDS.content;
+    fields.forEach(({ key, label, tag, ph }) => {
+      const div = document.createElement('div');
+      div.className = 'field';
+      const val = (slide[key] || '').replace(/"/g, '&quot;');
+      div.innerHTML = `
+        <label>${label}</label>
+        ${tag === 'textarea'
+          ? `<textarea id="f-${i}-${key}" placeholder="${ph}" oninput="onChange(${i})">${slide[key] || ''}</textarea>`
+          : `<input type="text" id="f-${i}-${key}" placeholder="${ph}" value="${val}" oninput="onChange(${i})">`}
+      `;
+      form.appendChild(div);
+    });
+
+    // Initial render
+    const canvas = document.getElementById(`canvas-${i}`);
+    renderSlide(canvas, slide, i + 1, slides.length);
+  });
+
+  document.getElementById('bottom-actions').classList.remove('hidden');
+  document.getElementById('slides-container').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function onChange(idx) {
+  const slide = slidesData[idx];
+  const fields = FIELDS[slide.type] || FIELDS.content;
+  fields.forEach(({ key, tag }) => {
+    const el = document.getElementById(`f-${idx}-${key}`);
+    if (el) slide[key] = el.value;
+  });
+  renderSlide(document.getElementById(`canvas-${idx}`), slide, idx + 1, slidesData.length);
+}
+
+// ─────────────────────────────────────────────────────────────
+// AI DRAFT
+// ─────────────────────────────────────────────────────────────
+async function draftContent() {
+  const topic = document.getElementById('topic-input').value.trim();
+  if (!topic) { setStatus('Enter a topic first.', true); return; }
+
+  const btn = document.getElementById('draft-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spin"></span>Drafting…';
+  setStatus('Asking Claude to draft your slides…');
+
+  try {
+    await loadAssets();
+
+    const res = await fetch('/api/draft', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ topic }),
+    });
+
+    if (!res.ok) {
+      const msg = await res.text();
+      throw new Error(msg || `HTTP ${res.status}`);
+    }
+
+    const data = await res.json();
+    if (!data.slides || !data.slides.length) throw new Error('No slides returned.');
+
+    slidesData = data.slides;
+    buildSlideCards(slidesData);
+    setStatus(`${slidesData.length} slides drafted. Edit any field — preview updates live.`);
+
+  } catch (err) {
+    setStatus(`Error: ${err.message}`, true);
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '✦ Draft with AI';
+  }
+}
+
+// ─────────────────────────────────────────────────────────────
+// DOWNLOAD
+// ─────────────────────────────────────────────────────────────
+function downloadSlide(i) {
+  const canvas = document.getElementById(`canvas-${i}`);
+  const a = document.createElement('a');
+  a.download = `slide_${String(i + 1).padStart(2, '0')}.png`;
+  a.href = canvas.toDataURL('image/png');
+  a.click();
+}
+
+async function downloadAll() {
+  const zip = new JSZip();
+  const folder = zip.folder('carousel_slides');
+
+  for (let i = 0; i < slidesData.length; i++) {
+    const canvas = document.getElementById(`canvas-${i}`);
+    const b64 = canvas.toDataURL('image/png').split(',')[1];
+    folder.file(`slide_${String(i + 1).padStart(2, '0')}.png`, b64, { base64: true });
+  }
+
+  const blob = await zip.generateAsync({ type: 'blob' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href = url; a.download = 'carousel_slides.zip'; a.click();
+  URL.revokeObjectURL(url);
+}
+
+// ─────────────────────────────────────────────────────────────
+// UTILS
+// ─────────────────────────────────────────────────────────────
+function setStatus(msg, isErr = false) {
+  const el = document.getElementById('status');
+  el.textContent = msg;
+  el.className = isErr ? 'err' : '';
+}
+
+function resetAll() {
+  slidesData = [];
+  document.getElementById('slides-container').innerHTML = '';
+  document.getElementById('bottom-actions').classList.add('hidden');
+  document.getElementById('topic-input').value = '';
+  setStatus('');
+}
+
+// Pre-load assets on page load
+loadAssets().catch(console.error);
+</script>
+
+</body>
+</html>
