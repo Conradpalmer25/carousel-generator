@@ -2,5 +2,6 @@
   "name": "carousel-generator",
   "version": "1.0.0",
   "description": "Instagram carousel slide generator — Loan Market Gold Coast",
-  "private": true
+  "private": true,
+  "type": "module"
 }
